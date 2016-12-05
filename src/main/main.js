@@ -29,6 +29,9 @@ import {runAI} from "main/ai";
 import {physics} from "physics/physics";
 import $ from 'jquery';
 import {controllerIDNumberFromGamepadID, controllerNameFromIDnumber, axis, button, gpdaxis, gpdbutton, keyboardMap, controllerMaps, scaleToMeleeAxes, scaleToGCTrigger, custcent} from "main/input";
+import GlobalChat from "multiplayer/mp-main";
+
+
 /*globals performance*/
 
 export const player = [0,0,0,0];
@@ -1515,12 +1518,14 @@ export function finishGame (){
   }, 2500);
 }
 
-export function start (){
+export function start(){
+
   for (var i=0;i<4;i++){
     buildPlayerObject(i);
     player[i].phys.face = 1;
     player[i].actionState = "WAIT";
   }
+  new GlobalChat();
     cacheDom();
     getKeyboardCookie();
     getTargetCookies();
