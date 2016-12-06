@@ -8,7 +8,7 @@
     "dev": "webpack --progress --colors --watch --config=bin/webpack/dev.config.js",
     "animations": "webpack --progress --colors --config=bin/webpack/animations.config.js",
     "release": "node bin/release.js",
-    "serve":"node app"
+    "serve": "node app"
   },
   "engines": {
     "node": "7.2.0",
@@ -34,17 +34,20 @@
     "babel-loader": "^6.2.8",
     "babel-preset-es2015": "^6.18.0",
     "babel-preset-stage-2": "^6.18.0",
+    "deepstream.io-client-js": "^2.0.0",
     "eslint": "^3.10.2",
     "eslint-loader": "^1.6.1",
     "express": "^4.14.0",
     "fs-extra": "^1.0.0",
     "howler": "^2.0.1",
     "jquery": "1.11.3",
+    "deepstream.io": "^2.0.1",
     "webpack": "^1.13.3",
     "webpack-notifier": "^1.4.1",
     "yargs": "^6.4.0"
   },
   "devDependencies": {
+
     "happypack": "^3.0.0",
     "sw-precache-webpack-plugin": "^0.6.3"
   },
