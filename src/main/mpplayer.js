@@ -1,5 +1,5 @@
 import {player} from 'main/main';
-import {setPlayer, setPlayerInputs} from "./main";
+import {setNetworkInputBuffer, getNetworkInputBuffer} from "./input";
 /*eslint-disable*/
 export class MPPlayer{
 
@@ -13,7 +13,7 @@ export class MPPlayer{
       record.set({
         name: name,
         playerPos:playerposition,
-        inputs:player[playerposition].inputs
+        inputs:MPPlayer.getNetworkInput(playerposition)
       });
 
       // Listen for the record's delete event. We use the deletion
@@ -31,7 +31,7 @@ export class MPPlayer{
       // on this event and will use it as a trigger to create the spaceship
       global.ds.event.subscribe( 'status/' + name );
 
-      setPlayerInputs(0,record.get("inputs"));
+      MPPlayer.setPlayerInput(playerposition,record.get("inputs"));
 
 
     });
@@ -43,7 +43,14 @@ export class MPPlayer{
     room.on( 'update', this._update.bind( this ) );
   }
 
+  static setPlayerInput(index,val){
+    setNetworkInputBuffer(index,val);
 
+  }
+
+static getNetworkInput(playerSlot){
+return getNetworkInputBuffer(playerSlot);
+}
 
   _update( msSinceLastFrame, currentTime ) {
     // let's make sure the record is properly loaded
@@ -55,7 +62,7 @@ export class MPPlayer{
     var data = this._record.get();
     console.log(data.inputs);
     if(data !== undefined) {
-      setPlayerInputs(this._playerposition, data.inputs);
+      MPPlayer.setPlayerInput(this._playerposition, data.inputs);
     }
 
   }
