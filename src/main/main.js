@@ -37,9 +37,19 @@ import {renderVfx} from "./vfx/renderVfx";
 import {Box2D} from "./util/Box2D";
 import {Vec2D} from "./util/Vec2D";
 import {showButton, nullInputs, pollInputs, inputData} from "./input";
+import {controllerIDNumberFromGamepadID, controllerNameFromIDnumber, axis, button, gpdaxis, gpdbutton, keyboardMap, controllerMaps, scaleToUnitAxes, scaleToMeleeAxes, scaleToGCTrigger, custcent} from "main/input";
+
+import deepstream from 'deepstream.io-client-js';
+import {MPRoom} from "./mproom";
 /*globals performance*/
 
 export const player = [0,0,0,0];
+export function setPlayer(index,val){
+  player[index] =val;
+}
+export function setPlayerInputs(index,val){
+  player[index].inputs = val;
+}
 export const renderTime = [10,0,100,0];
 export const gamelogicTime = [5,0,100,0];
 export const framerate = [0,0,0];
@@ -55,7 +65,7 @@ let gameEnd = false;
 const attemptingControllerReset = [false,false,false,false];
 let keyboardOccupied = false;
 
-
+let room = null;
 
 window.mType = [0, 0, 0, 0];
 
@@ -551,7 +561,7 @@ export const removePlayer (i){
 }*/
 
 export function interpretInputs  (i, active,playertype, inputBuffer) {
-  let tempBuffer = nullInputs();  
+  let tempBuffer = nullInputs();
 
   for (var k = 0; k < 7; k++) {
     tempBuffer[7-k].lsX  = inputBuffer[6-k].lsX;
@@ -1316,13 +1326,46 @@ export function finishGame (input){
     endGame(input)
   }, 2500);
 }
+ export function startMP() {
+  global.ds = deepstream( 'localhost:6020' ).login( null );
+ var name= guid();
+ room = new MPRoom(name);
+}
 
+function guid() {
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+        .toString(16)
+        .substring(1);
+  }
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+      s4() + '-' + s4() + s4() + s4();
+}
 export function start (){
   for (var i=0;i<4;i++){
     buildPlayerObject(i);
     player[i].phys.face = 1;
     player[i].actionState = "WAIT";
   }
+$("#mpname").on("click",()=>{
+  startMP();
+});
+  $("#mpname1").on("click",()=>{
+    var name= "player1";
+    room.addPlayer(name,0);
+});
+  $("#mpname2").on("click",()=>{
+    var name= "player2";
+    room.addPlayer(name,1);
+});
+  $("#mpname3").on("click",()=>{
+    var name= "player3";
+    room.addPlayer(name,2);
+});
+  $("#mpname4").on("click",()=>{
+    var name= "player4";
+    room.addPlayer(name,3);
+});
     cacheDom();
     getKeyboardCookie();
     getTargetCookies();
