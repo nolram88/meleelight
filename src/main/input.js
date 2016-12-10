@@ -7,6 +7,7 @@ import {
 import {Vec2D} from "./util/Vec2D";
 import {keyMap} from "../settings";
 import {playing} from "./main";
+import {MPPlayer} from "./mpplayer";
 
 export const button = {
   "a" : 0, 
@@ -109,8 +110,19 @@ export const aiPlayer4 = [ new inputData ( )
 
 export const aiInputBank = [aiPlayer1,aiPlayer2,aiPlayer3,aiPlayer4];
 
+let allNetworkInputBuffer = [nullInputs,nullInputs,nullInputs,nullInputs];
+
+export function setNetworkInputBuffer(index,val){
+  allNetworkInputBuffer[index] =val;
+}
+
+export function getNetworkInputBuffer(index){
+  return allNetworkInputBuffer[index];
+}
+
 // should be able to move out the "frameByFrame" aspect of the following function
 // it is only used to make z button mean "left trigger value = 0.35" + "A = true".
+
 export function pollInputs (gameMode, frameByFrame, controllerType, playerSlot, controllerIndex, keys,playertype) {
   // input is the input for player i in the current frame
   let input = nullInput(); // initialise with default values
@@ -121,6 +133,8 @@ export function pollInputs (gameMode, frameByFrame, controllerType, playerSlot, 
   }
     else if (playertype === 0) {
     input = pollGamepadInputs(gameMode, controllerType, playerSlot, controllerIndex, frameByFrame);
+  } else if (playertype === 2){
+    input = pollNetworkInputs(gameMode,controllerType,playerSlot,controllerIndex,frameByFrame);
   }
   return input;
 }
@@ -208,6 +222,10 @@ function pollKeyboardInputs(gameMode, frameByFrame, keys) {
   }
 
   return input;
+}
+
+function pollNetworkInputs(playerSlot) {
+return getNetworkInputBuffer(playerSlot);
 }
 
 function pollGamepadInputs(gameMode, controllerType, playerSlot, controllerIndex, frameByFrame) {
