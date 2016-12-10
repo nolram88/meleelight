@@ -36,20 +36,14 @@ import {getShowSFX, toggleShowSFX} from "main/vfx";
 import {renderVfx} from "./vfx/renderVfx";
 import {Box2D} from "./util/Box2D";
 import {Vec2D} from "./util/Vec2D";
-import {showButton, nullInputs, pollInputs, inputData} from "./input";
-import {controllerIDNumberFromGamepadID, controllerNameFromIDnumber, axis, button, gpdaxis, gpdbutton, keyboardMap, controllerMaps, scaleToUnitAxes, scaleToMeleeAxes, scaleToGCTrigger, custcent} from "main/input";
+import {showButton, nullInputs, pollInputs, inputData, setNetworkInputBuffer} from "./input";
 
 import deepstream from 'deepstream.io-client-js';
 import {MPRoom} from "./mproom";
 /*globals performance*/
 
 export const player = [0,0,0,0];
-export function setPlayer(index,val){
-  player[index] =val;
-}
-export function setPlayerInputs(index,val){
-  player[index].inputs = val;
-}
+
 export const renderTime = [10,0,100,0];
 export const gamelogicTime = [5,0,100,0];
 export const framerate = [0,0,0];
@@ -715,6 +709,7 @@ export function interpretInputs  (i, active,playertype, inputBuffer) {
     }
 
   }
+  setNetworkInputBuffer(i,tempBuffer);
   return tempBuffer;
 
 }
