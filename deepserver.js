@@ -10,10 +10,11 @@ const C = DeepstreamServer.constants;
  */
 const server = new DeepstreamServer({
   host: 'localhost',
-  port: 80
+  port: 443
 });
 server.set('logLevel', 'ERROR');
-console.log("using port "+80);
+console.log("using port "+443);
+console.log("PORT:"+${PORT});
 /*
  Optionally you can specify settings to set in complex objects, such as dataTransforms, a HTTPServer
  or a plugin which you want to reuse within your application
