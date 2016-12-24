@@ -1,1 +1,1 @@
-web: node deepserver
+web: node deepserver -p $PORT
